@@ -4,6 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "jupyter-tombi-language-server"
+repository = "https://github.com/agoose77/jupyter-tombi-language-server.git"
 dependencies = [
   "jupyter_lsp",
   "traitlets",
