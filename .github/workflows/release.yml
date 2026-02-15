@@ -1,0 +1,56 @@
+# .github/workflows/ci-cd.yml
+on:
+  release:
+    types:
+      - published
+
+name: release
+
+jobs:
+  release-build:
+    name: Build package
+    runs-on: ubuntu-latest
+    steps:
+      # retrieve your distributions here
+      - name: Checkout
+        uses: actions/checkout@v6
+    
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+
+      - name: Build release distributions
+        run: |
+          # NOTE: put your own distribution build steps here.
+          python -m pip install build
+          python -m build
+      - name: Upload distributions
+        uses: actions/upload-artifact@v6
+        with:
+          name: release-dists
+          path: dist/
+
+  pypi-publish:
+    runs-on: ubuntu-latest
+    name: Upload to PyPI
+
+    needs:
+      - release-build
+
+    permissions:
+      # IMPORTANT: this permission is mandatory for trusted publishing
+      id-token: write
+
+    environment:
+      name: pypi
+      url: https://pypi.org/p/jupyter-tombi-language-server
+
+    steps:
+      - name: Retrieve release distributions
+        uses: actions/download-artifact@v7
+        with:
+          name: release-dists
+          path: dist/
+
+      - name: Publish release distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
