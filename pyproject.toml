@@ -6,12 +6,13 @@ build-backend = "hatchling.build"
 name = "jupyter-tombi-language-server"
 dependencies = [
   "jupyter_lsp",
-  "traitlets"
+  "traitlets",
+  "tombi"
 ]
 version = "0.1.0"
 readme = "README.md"
 description = "A plugin for Jupyter LSP that adds support for tombi, the TOML LSP"
 
 [project.entry-points.jupyter_lsp_spec_v1]
-tombi-language-server = "jupyter_tombi_language_server:tombi"
+tombi-language-server = "jupyter_tombi_language_server.spec:tombi"
 
